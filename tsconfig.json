@@ -1,0 +1,16 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "rootDirs": ["./src", "./tests"],
+    "outDir": "./build",
+    "sourceMap": true,
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true
+  },
+  "ts-node": {
+    "files": true
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "exclude": ["node_modules"]
+}

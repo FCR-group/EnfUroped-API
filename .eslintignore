@@ -1,0 +1,11 @@
+node_modules
+build
+public
+env
+package-lock.json
+static
+docs
+*.old/
+*.json
+*.js
+*.hbs

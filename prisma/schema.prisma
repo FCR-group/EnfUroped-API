@@ -1,0 +1,27 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["interactiveTransactions"]
+}
+
+generator docs {
+    provider = "node node_modules/prisma-docs-generator"
+    output   = "../docs/schema"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Session {
+    id        String   @id
+    sid       String   @unique
+    data      String
+    expiresAt DateTime
+}
+
+model User {
+    cpf      String @id
+    email    String @unique
+    password String
+}
