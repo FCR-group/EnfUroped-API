@@ -35,5 +35,18 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/node_modules": true
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Uroped",
+      "database": "Uroped_dev",
+      "username": "postgres",
+      "password": "password"
+    }
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

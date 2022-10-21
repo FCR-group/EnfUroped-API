@@ -12,7 +12,7 @@ import handleCommonError from "./middlewares/handleCommonError";
 
 const server = express();
 
-if (NODE_ENV !== "production") {
+if (NODE_ENV !== "production" && NODE_ENV !== "test") {
   server.use(morgan("dev"));
 }
 

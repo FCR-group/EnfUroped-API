@@ -1,12 +1,24 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   hashPasswordBeforeCreate,
   hashPasswordBeforeUpdate,
+  checkUserType,
 } from "./middlewares/prismaMiddlewares";
+import { NODE_ENV } from "./utils/env";
 
-const prismaClient = new PrismaClient();
+const options: Prisma.PrismaClientOptions = {};
+
+if (NODE_ENV === "test") {
+  options.log = ["error"];
+} else if (NODE_ENV !== "production") {
+  options.log = ["query", "info", "warn", "error"];
+  options.errorFormat = "pretty";
+}
+
+const prismaClient = new PrismaClient(options);
 
 prismaClient.$use(hashPasswordBeforeCreate);
 prismaClient.$use(hashPasswordBeforeUpdate);
+prismaClient.$use(checkUserType);
 
 export default prismaClient;

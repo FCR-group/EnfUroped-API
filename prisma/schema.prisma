@@ -21,7 +21,126 @@ model Session {
 }
 
 model User {
-    cpf      String @id
-    email    String @unique
+    cpf      String   @id
+    email    String   @unique
     password String
+    name     String
+    type     UserType
+    phone    String?
+    tokens   Token[]
+    student  Student?
+    nurse    Nurse?
+    family   Family?
+}
+
+enum UserType {
+    STUDENT
+    NURSE
+    FAMILY
+}
+
+model Token {
+    uuid      String    @id @default(uuid())
+    expiresAt DateTime
+    type      TokenType
+    user      User      @relation(fields: [userCpf], references: [cpf], onDelete: Cascade, onUpdate: Cascade)
+    userCpf   String
+}
+
+enum TokenType {
+    PASSWORD_RECOVERY
+    EMAIL_VALIDATION
+}
+
+model Student {
+    user        User    @relation(fields: [userCpf], references: [cpf], onDelete: Cascade, onUpdate: Cascade)
+    userCpf     String  @id
+    isPermitted Boolean @default(false)
+    posts       Post[]
+}
+
+model Post {
+    id           Int      @id @default(autoincrement())
+    authors      String[]
+    reviewers    String[]
+    title        String
+    image        String
+    video        String?
+    content      String
+    introduction String
+    createdAt    DateTime @default(now())
+    owner        Student? @relation(fields: [ownerCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
+    ownerCpf     String?
+    tags         Tag[]
+}
+
+model Tag {
+    name  String @id
+    posts Post[]
+}
+
+model Nurse {
+    user           User           @relation(fields: [userCpf], references: [cpf], onDelete: Cascade, onUpdate: Cascade)
+    userCpf        String         @id
+    isPermitted    Boolean        @default(false)
+    isAdmin        Boolean        @default(false)
+    availabilities Availability[]
+    patients       Patient[]
+    messages       Message[]
+}
+
+model Availability {
+    dateTime    DateTime     @id
+    nurses      Nurse[]
+    appointment Appointment?
+}
+
+model Family {
+    user     User      @relation(fields: [userCpf], references: [cpf], onDelete: Cascade, onUpdate: Cascade)
+    userCpf  String    @id
+    patients Patient[]
+    messages Message[]
+}
+
+model Patient {
+    id           Int           @id @default(autoincrement())
+    name         String
+    dateOfBirth  DateTime
+    status       PatientStatus
+    isActive     Boolean       @default(true)
+    family       Family        @relation(fields: [familyCpf], references: [userCpf], onDelete: Cascade, onUpdate: Cascade)
+    familyCpf    String
+    nurse        Nurse         @relation(fields: [nurseCpf], references: [userCpf], onDelete: Restrict, onUpdate: Cascade)
+    nurseCpf     String
+    appointments Appointment[]
+}
+
+enum PatientStatus {
+    WITH_FOLLOW_UP
+    WITHOUT_FOLLOW_UP
+    RELAPSE
+}
+
+model Message {
+    id         Int      @id @default(autoincrement())
+    title      String
+    content    String
+    attachment String
+    fromNurse  Boolean
+    createdAt  DateTime @default(now())
+    nurse      Nurse?   @relation(fields: [nurseCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
+    nurseCpf   String?
+    family     Family?  @relation(fields: [familyCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
+    familyCpf  String?
+    response   Message? @relation("MessageResponse", fields: [responseId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    responseId Int?     @unique
+    parent     Message? @relation("MessageResponse")
+}
+
+model Appointment {
+    id           Int          @id @default(autoincrement())
+    patient      Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    patientId    Int
+    dateTime     DateTime     @unique
+    availability Availability @relation(fields: [dateTime], references: [dateTime], onDelete: Restrict, onUpdate: Cascade)
 }
