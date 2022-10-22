@@ -1,4 +1,4 @@
-[![EnfUroped_API CI](https://github.com/Eduardo-RFarias/EnfUroped-API/actions/workflows/githubActions.yml/badge.svg)](https://github.com/Eduardo-RFarias/EnfUroped-API/actions/workflows/githubActions.yml)
+[![EnfUroped_API CI](https://github.com/FCR-group/EnfUroped-API/actions/workflows/githubActions.yml/badge.svg)](https://github.com/FCR-group/EnfUroped-API/actions/workflows/githubActions.yml)
 
 # Uroped API
 
