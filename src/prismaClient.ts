@@ -12,7 +12,7 @@ if (NODE_ENV === "test") {
   options.log = ["error"];
 } else if (NODE_ENV !== "production") {
   options.log = ["query", "info", "warn", "error"];
-  options.errorFormat = "pretty";
+  // options.errorFormat = "pretty";
 }
 
 const prismaClient = new PrismaClient(options);

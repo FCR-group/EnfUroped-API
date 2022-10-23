@@ -86,5 +86,22 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
-  }
+  },
+  "description": "[![EnfUroped_API CI](https://github.com/FCR-group/EnfUroped-API/actions/workflows/githubActions.yml/badge.svg)](https://github.com/FCR-group/EnfUroped-API/actions/workflows/githubActions.yml)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FCR-group/EnfUroped-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FCR-group/EnfUroped-API/issues"
+  },
+  "homepage": "https://github.com/FCR-group/EnfUroped-API#readme"
 }
