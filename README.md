@@ -2,7 +2,7 @@
 
 # Uroped API
 
-O EnfUroped API é uma "REST API" que alimenta a aplicação EnfUroped-client, confira vários documentos úteis sobre o projeto na pasta docs.
+O EnfUroped API é uma "REST API" que alimenta a aplicação [EnfUroped-client](https://github.com/FCR-group/EnfUroped-Client), confira vários documentos úteis sobre o projeto no repositório [EnfUroped-docs](https://github.com/FCR-group/EnfUroped-Docs).
 
 > Este app é feito usando nodejs 16-lts e express 4.17, confira o arquivo package.json com todas as dependências do projeto.
 
