@@ -1,9 +1,9 @@
 import nodecpf from "node-cpf";
 import { v4 as uuid } from "uuid";
+import { Prisma } from "@prisma/client";
 import { createStudent, resetDatabase } from "../utilities";
 import prisma from "../../src/prismaClient";
 import { comparePassword } from "../../src/helpers/userHelper";
-import { Prisma } from "@prisma/client";
 
 describe("User model tests", () => {
   beforeAll(async () => {

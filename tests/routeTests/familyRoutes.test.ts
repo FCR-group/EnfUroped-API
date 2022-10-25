@@ -1,6 +1,6 @@
 import req from "supertest";
-import server from "../../src/server";
 import nodeCpf from "node-cpf";
+import server from "../../src/server";
 import { login, resetDatabase, createFamily, createNurse } from "../utilities";
 import { UserWithFamily, UserWithNurse } from "../../src/types/userTypes";
 

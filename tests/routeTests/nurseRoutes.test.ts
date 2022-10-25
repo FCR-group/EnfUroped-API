@@ -1,7 +1,7 @@
 import req from "supertest";
 import prisma from "../../src/prismaClient";
 import server from "../../src/server";
-import { UserWithNurse } from "../types/userTypes";
+import { UserWithNurse } from "../../src/types/userTypes";
 import { createNurse, login, resetDatabase } from "../utilities";
 
 describe("Nurse routes tests", () => {
@@ -125,7 +125,7 @@ describe("Nurse routes tests", () => {
 
     expect(response.status).toBe(204);
 
-    const nurse = await prisma.user.findUnique({
+    const updatedNurse = await prisma.user.findUnique({
       where: {
         cpf: nurse2.cpf,
       },
@@ -134,7 +134,7 @@ describe("Nurse routes tests", () => {
       },
     });
 
-    expect(nurse?.nurse?.isPermitted).toBe(true);
+    expect(updatedNurse?.nurse?.isPermitted).toBe(true);
   });
 
   it("should try to permit a nurse but returns 403 as the user is not admin", async () => {
@@ -160,7 +160,7 @@ describe("Nurse routes tests", () => {
 
     expect(response.status).toBe(204);
 
-    const nurse = await prisma.user.findUnique({
+    const updatedNurse = await prisma.user.findUnique({
       where: {
         cpf: nurse2.cpf,
       },
@@ -169,7 +169,7 @@ describe("Nurse routes tests", () => {
       },
     });
 
-    expect(nurse?.nurse?.isAdmin).toBe(true);
+    expect(updatedNurse?.nurse?.isAdmin).toBe(true);
   });
 
   it("should try to turn a nurse into an admin but returns 403 as the user is not admin", async () => {

@@ -3,7 +3,6 @@ import nodeCpf from "node-cpf";
 import { v4 as uuid } from "uuid";
 import prisma from "../src/prismaClient";
 import server from "../src/server";
-import { UserWithFamily } from "../src/types/userTypes";
 
 async function resetDatabase() {
   await prisma.$transaction(async (transaction) => {
