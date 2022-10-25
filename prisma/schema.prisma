@@ -71,7 +71,7 @@ model Post {
     createdAt    DateTime @default(now())
     owner        Student? @relation(fields: [ownerCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
     ownerCpf     String?
-    tags         Tag[]
+    tags         Tag[] 
 }
 
 model Tag {

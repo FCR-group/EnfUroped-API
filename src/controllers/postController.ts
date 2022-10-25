@@ -1,4 +1,3 @@
-import { Post } from "@prisma/client";
 import { RequestHandler } from "express";
 import HttpError from "http-errors";
 import prisma from "../prismaClient";
@@ -53,6 +52,39 @@ const retrieve: RequestHandler = async (req, res) => {
   return res.json(post);
 };
 
+const searchByTag: RequestHandler = async (req, res) => {
+  const { tags } = req.query;
+  let tagsHelper: any;
+
+  if (!tags) {
+    throw new HttpError.BadRequest();
+  }
+
+  if (tags?.length === 1) {
+    tagsHelper = [];
+    tagsHelper.push(tags as string);
+  } else {
+    tagsHelper = tags as string[];
+  }
+
+  const posts = await prisma.tag.findMany({
+    where: {
+      name: {
+        in: tagsHelper,
+      },
+    },
+    select: {
+      posts: true,
+    },
+  });
+
+  if (!posts || posts.length === 0) {
+    throw new HttpError.NotFound();
+  }
+
+  return res.json(posts);
+};
+
 const update: RequestHandler = async (req, res) => {
   const {
     id,
@@ -98,4 +130,4 @@ const destroy: RequestHandler = async (req, res) => {
   return res.sendStatus(204);
 };
 
-export default { list, retrieve, destroy, publish, update };
+export default { list, retrieve, destroy, publish, update, searchByTag };
