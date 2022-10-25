@@ -224,4 +224,6 @@ describe("User model tests", () => {
     expect(comparePassword("newpassword", student.password)).toBe(true);
     expect(comparePassword("password", student.password)).toBe(false);
   });
+
+  it("should try to create a user with invalid cpf", async () => {});
 });

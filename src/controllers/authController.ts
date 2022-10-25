@@ -1,5 +1,6 @@
 import { UserType } from "@prisma/client";
 import { Request, RequestHandler, Response } from "express";
+import HttpError from "http-errors";
 import { authenticate } from "../middlewares/authMiddlewares";
 import prisma from "../prismaClient";
 
@@ -95,4 +96,12 @@ const studentRegister: RequestHandler = async (req, res) => {
   return res.status(201).json(student);
 };
 
-export default { login, logout, familyRegister, nurseRegister, studentRegister };
+const getLoggedInUser: RequestHandler = (req, res) => {
+  if (!req.user) {
+    throw new HttpError.Unauthorized();
+  }
+
+  return res.json(req.user);
+};
+
+export default { login, logout, familyRegister, nurseRegister, studentRegister, getLoggedInUser };
