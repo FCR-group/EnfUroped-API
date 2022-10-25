@@ -22,7 +22,7 @@ async function resetDatabase() {
   });
 }
 
-async function login(cpf: string, password: string) {
+async function login(cpf: string, password: string = "123456") {
   const response = await req(server).post(`/auth/login`).send({
     cpf,
     password,
@@ -31,7 +31,7 @@ async function login(cpf: string, password: string) {
   return response.header["set-cookie"];
 }
 
-async function createFamily(cpf?: string, email?: string): Promise<UserWithFamily> {
+async function createFamily(cpf?: string, email?: string) {
   const family = await prisma.user.create({
     data: {
       cpf: cpf || nodeCpf.generate(),

@@ -1,9 +1,9 @@
 import req from "supertest";
 import nodeCpf from "node-cpf";
 import { differenceInSeconds } from "date-fns";
-import server from "../src/server";
-import { resetDatabase } from "./utilities";
-import prisma from "../src/prismaClient";
+import server from "../../src/server";
+import { resetDatabase } from "../utilities";
+import prisma from "../../src/prismaClient";
 
 describe("Login tests", () => {
   const studentToRegister = {

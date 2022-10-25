@@ -26,7 +26,7 @@ function isOfType(type: UserType): RequestHandler {
 
 const isAdmin: RequestHandler = async (req, res, next) => {
   if (!req.user) {
-    throw new HttpError.Forbidden();
+    throw new HttpError.Unauthorized();
   }
 
   if (req.user.nurse?.isAdmin) {
