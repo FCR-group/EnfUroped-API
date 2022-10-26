@@ -29,15 +29,17 @@ const retrieve: RequestHandler = async (req, res) => {
   return res.json(tag);
 };
 
-// todo: change the type of post
 const addPosts: RequestHandler = async (req, res) => {
-  const { name, post } = req.body;
+  const { name } = req.params;
+  const { postId } = req.body;
+
   await prisma.tag.update({
     where: { name },
     data: {
-      posts: post,
+      posts: { connect: { id: postId } },
     },
   });
+
   return res.sendStatus(204);
 };
 

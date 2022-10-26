@@ -5,6 +5,6 @@ const routes = Router();
 
 routes.post("/send", controller.send);
 routes.get("/", controller.list);
-routes.get("/messages/:", controller.chatMessage);
+routes.get("/messages/", controller.chatMessage);
 
 export default routes;

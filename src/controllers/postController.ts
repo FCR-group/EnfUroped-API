@@ -12,7 +12,6 @@ const publish: RequestHandler = async (req, res) => {
     content,
     introduction,
     createdAt,
-    owner,
     ownerCpf,
     tags,
   } = req.body;
@@ -26,9 +25,13 @@ const publish: RequestHandler = async (req, res) => {
       content,
       introduction,
       createdAt,
-      owner,
-      ownerCpf,
-      tags,
+      owner: { connect: { userCpf: ownerCpf } },
+      tags: {
+        connectOrCreate: tags.map((tag: string) => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
     },
   });
   return res.sendStatus(201);
@@ -86,20 +89,11 @@ const searchByTag: RequestHandler = async (req, res) => {
 };
 
 const update: RequestHandler = async (req, res) => {
-  const {
-    id,
-    authors,
-    reviewers,
-    title,
-    image,
-    video,
-    content,
-    introduction,
-    createdAt,
-    owner,
-    ownerCpf,
-    tags,
-  } = req.body;
+  const { idH } = req.params;
+  const id = parseInt(idH, 10);
+  const { authors, reviewers, title, image, video, content, introduction, createdAt, ownerCpf } =
+    req.body;
+
   await prisma.post.update({
     where: { id },
     data: {
@@ -111,9 +105,7 @@ const update: RequestHandler = async (req, res) => {
       content,
       introduction,
       createdAt,
-      owner,
-      ownerCpf,
-      tags,
+      owner: { connect: { userCpf: ownerCpf } },
     },
   });
   return res.sendStatus(204);

@@ -7,7 +7,7 @@ routes.post("/publish", controller.publish);
 routes.get("/", controller.list);
 routes.get("/searchByTag/", controller.searchByTag);
 routes.get("/:id", controller.retrieve);
-routes.patch("/update", controller.update);
+routes.patch("/update/:idH", controller.update);
 routes.delete("/:id", controller.destroy);
 
 export default routes;

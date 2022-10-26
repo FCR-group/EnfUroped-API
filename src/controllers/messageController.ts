@@ -2,21 +2,11 @@ import { RequestHandler } from "express";
 import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
+// without test
+
 const send: RequestHandler = async (req, res) => {
-  const {
-    title,
-    content,
-    attachment,
-    fromNurse,
-    createdAt,
-    nurse,
-    nurseCpf,
-    family,
-    familyCpf,
-    response,
-    responseId,
-    parent,
-  } = req.body;
+  const { title, content, attachment, fromNurse, createdAt, nurseCpf, familyCpf, parentId } =
+    req.body;
   await prisma.message.create({
     data: {
       title,
@@ -24,13 +14,9 @@ const send: RequestHandler = async (req, res) => {
       attachment,
       fromNurse,
       createdAt,
-      nurse,
-      nurseCpf,
-      family,
-      familyCpf,
-      response,
-      responseId,
-      parent,
+      nurse: { connect: { userCpf: nurseCpf } },
+      family: { connect: { userCpf: familyCpf } },
+      parent: parentId !== undefined ? { connect: { id: parentId } } : undefined,
     },
   });
   return res.sendStatus(201);
@@ -45,8 +31,17 @@ const list: RequestHandler = async (req, res) => {
 };
 
 const chatMessage: RequestHandler = async (req, res) => {
-  const { nurse, patient } = req.query;
-  const message = await prisma.message.findMany({ where: {} });
+  const { familyCpfQ } = req.query;
+  const familyCpf = familyCpfQ as string;
+
+  const message = await prisma.message.findMany({
+    where: {
+      familyCpf,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
 
   if (!message) {
     throw new HttpError.NotFound();

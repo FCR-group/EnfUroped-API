@@ -3,16 +3,15 @@ import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
 const make: RequestHandler = async (req, res) => {
-  const { patient, patientId, dateTime, availability } = req.body;
-  await prisma.appointment.create({ data: { patient, patientId, dateTime, availability } });
+  const { patientId, dateTime } = req.body;
+  await prisma.appointment.create({
+    data: { patient: { connect: { id: patientId } }, availability: { connect: { dateTime } } },
+  });
   return res.sendStatus(201);
 };
 
 const list: RequestHandler = async (req, res) => {
   const appointments = await prisma.appointment.findMany();
-  if (!appointments) {
-    throw new HttpError.NotFound();
-  }
   return res.json(appointments);
 };
 
@@ -27,14 +26,15 @@ const retrieve: RequestHandler = async (req, res) => {
 };
 
 const update: RequestHandler = async (req, res) => {
-  const { id, patient, patientId, dateTime, availability } = req.body;
+  const { idH } = req.params;
+  const id = parseInt(idH, 10);
+
+  const { patientId, dateTime } = req.body;
   await prisma.appointment.update({
     where: { id },
     data: {
-      patient,
-      patientId,
-      dateTime,
-      availability,
+      patient: { connect: { id: patientId } },
+      availability: { connect: { dateTime } },
     },
   });
   return res.sendStatus(204);

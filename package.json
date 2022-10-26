@@ -1,7 +1,7 @@
 {
   "name": "enfuroped-api",
   "scripts": {
-    "start": "nodemon --watch \"src/\" --exec \"npm run lint:src && npx ts-node src/index.ts\" -e ts",
+    "start": "nodemon --watch \"src/\" --exec \"npx ts-node src/index.ts\" -e ts",
     "start:build": "node build/index.js",
     "test": "npm run lint:tests && npm run migrate_reset_test && npx dotenv -e env/.test.env jest tests -- --runInBand",
     "test:no-prepare": "npx dotenv -e env/.test.env jest tests -- --runInBand",
