@@ -41,7 +41,7 @@ const familyRegister: RequestHandler = async (req, res) => {
 };
 
 const nurseRegister: RequestHandler = async (req, res) => {
-  const { cpf, email, name, phone, password } = req.body;
+  const { cpf, email, name, phone, password, numCoren, ufCoren } = req.body;
 
   const nurse = await prisma.user.create({
     data: {
@@ -52,7 +52,10 @@ const nurseRegister: RequestHandler = async (req, res) => {
       phone,
       type: UserType.NURSE,
       nurse: {
-        create: {},
+        create: {
+          numCoren,
+          ufCoren,
+        },
       },
     },
     select: {

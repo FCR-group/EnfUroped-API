@@ -38,7 +38,10 @@ describe("User model tests", () => {
         password: "password",
         type: "NURSE",
         nurse: {
-          create: {},
+          create: {
+            numCoren: "1234567",
+            ufCoren: "SP",
+          },
         },
       },
     });
@@ -119,7 +122,10 @@ describe("User model tests", () => {
           password: "password",
           type: "STUDENT",
           nurse: {
-            create: {},
+            create: {
+              numCoren: "1234567",
+              ufCoren: "DF",
+            },
           },
         },
       })
@@ -205,7 +211,10 @@ describe("User model tests", () => {
           password: "password",
           type: "FAMILY",
           nurse: {
-            create: {},
+            create: {
+              numCoren: "1234567",
+              ufCoren: "RJ",
+            },
           },
         },
       })

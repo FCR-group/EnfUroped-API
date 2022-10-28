@@ -66,10 +66,12 @@ describe("Nurse routes tests", () => {
       .set("Cookie", adminCookieJar)
       .send({
         name: "New name",
+        numCoren: "7654321",
       });
 
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("New name");
+    expect(response.body.nurse.numCoren).toBe("7654321");
   });
 
   it("should try to update a nurse but returns 403 as the user is another nurse", async () => {
