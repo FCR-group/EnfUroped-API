@@ -1,5 +1,44 @@
 import { Prisma, User, UserType } from "@prisma/client";
 import bcrypt from "bcrypt";
+import nodeCpf from "node-cpf";
+
+const checkCpfBeforeCreate: Prisma.Middleware = (params, next) => {
+  if (params.model === "User" && params.action === "create") {
+    const user = params.args.data as User;
+
+    if (!nodeCpf.validate(user.cpf)) {
+      throw new Prisma.PrismaClientValidationError("Invalid CPF");
+    }
+
+    if (nodeCpf.isMasked(user.cpf)) {
+      user.cpf = nodeCpf.unMask(user.cpf);
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    params.args.data = user;
+  }
+
+  return next(params);
+};
+
+const checkCpfBeforeUpdate: Prisma.Middleware = (params, next) => {
+  if (params.model === "User" && params.action === "update" && params.args.data.cpf !== undefined) {
+    const user = params.args.data as User;
+
+    if (!nodeCpf.validate(user.cpf)) {
+      throw new Prisma.PrismaClientValidationError("Invalid CPF");
+    }
+
+    if (nodeCpf.isMasked(user.cpf)) {
+      user.cpf = nodeCpf.unMask(user.cpf);
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    params.args.data = user;
+  }
+
+  return next(params);
+};
 
 const hashPasswordBeforeCreate: Prisma.Middleware = (params, next) => {
   if (params.model === "User" && params.action === "create") {
@@ -67,4 +106,10 @@ const checkUserType: Prisma.Middleware = (params, next) => {
   return next(params);
 };
 
-export { hashPasswordBeforeCreate, hashPasswordBeforeUpdate, checkUserType };
+export {
+  checkCpfBeforeCreate,
+  checkCpfBeforeUpdate,
+  hashPasswordBeforeCreate,
+  hashPasswordBeforeUpdate,
+  checkUserType,
+};

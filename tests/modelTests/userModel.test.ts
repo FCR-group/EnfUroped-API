@@ -1,7 +1,9 @@
 import nodecpf from "node-cpf";
-import { resetDatabase } from "./utilities";
-import prisma from "../src/prismaClient";
-import { comparePassword } from "../src/helpers/userHelper";
+import { v4 as uuid } from "uuid";
+import { Prisma } from "@prisma/client";
+import { createStudent, resetDatabase } from "../utilities";
+import prisma from "../../src/prismaClient";
+import { comparePassword } from "../../src/helpers/userHelper";
 
 describe("User model tests", () => {
   beforeAll(async () => {
@@ -11,7 +13,7 @@ describe("User model tests", () => {
   it("should create a student", async () => {
     const student = await prisma.user.create({
       data: {
-        cpf: nodecpf.generate(),
+        cpf: nodecpf.generate(true),
         name: "Example Name",
         email: "student@email.com",
         password: "password",
@@ -36,7 +38,10 @@ describe("User model tests", () => {
         password: "password",
         type: "NURSE",
         nurse: {
-          create: {},
+          create: {
+            numCoren: "1234567",
+            ufCoren: "SP",
+          },
         },
       },
     });
@@ -117,7 +122,10 @@ describe("User model tests", () => {
           password: "password",
           type: "STUDENT",
           nurse: {
-            create: {},
+            create: {
+              numCoren: "1234567",
+              ufCoren: "DF",
+            },
           },
         },
       })
@@ -203,7 +211,10 @@ describe("User model tests", () => {
           password: "password",
           type: "FAMILY",
           nurse: {
-            create: {},
+            create: {
+              numCoren: "1234567",
+              ufCoren: "RJ",
+            },
           },
         },
       })
@@ -223,5 +234,107 @@ describe("User model tests", () => {
     expect(student.password).not.toBe("newpassword");
     expect(comparePassword("newpassword", student.password)).toBe(true);
     expect(comparePassword("password", student.password)).toBe(false);
+  });
+
+  it("should try to create a user with invalid cpf", async () => {
+    await expect(
+      prisma.user.create({
+        data: {
+          cpf: "123456789",
+          name: "Example Name",
+          email: "EXAMPLE@email.com",
+          password: "password",
+          type: "STUDENT",
+          student: {
+            create: {},
+          },
+        },
+      })
+    ).rejects.toThrowError("Invalid CPF");
+  });
+
+  it("should create a user with valid masked cpf", async () => {
+    const cpf = nodecpf.generate(true);
+
+    const student = await prisma.user.create({
+      data: {
+        cpf,
+        name: "Example Name",
+        email: `${uuid()}@example.com`,
+        password: "password",
+        type: "STUDENT",
+        student: {
+          create: {},
+        },
+      },
+    });
+
+    expect(student.cpf).toBe(nodecpf.unMask(cpf));
+  });
+
+  it("should create a user with valid unmasked cpf", async () => {
+    const cpf = nodecpf.generate();
+
+    const student = await prisma.user.create({
+      data: {
+        cpf,
+        name: "Example Name",
+        email: `${uuid()}@example.com`,
+        password: "password",
+        type: "STUDENT",
+        student: {
+          create: {},
+        },
+      },
+    });
+
+    expect(student.cpf).toBe(cpf);
+  });
+
+  it("should update user cpf", async () => {
+    const student = await createStudent();
+
+    const studentUpdated = await prisma.user.update({
+      where: {
+        cpf: student.cpf,
+      },
+      data: {
+        cpf: nodecpf.generate(true),
+      },
+    });
+
+    expect(studentUpdated.cpf).not.toBe(student.cpf);
+    expect(studentUpdated.cpf).toBe(nodecpf.unMask(studentUpdated.cpf));
+  });
+
+  it("should try to update user cpf with invalid cpf", async () => {
+    const student = await createStudent();
+
+    await expect(
+      prisma.user.update({
+        where: {
+          cpf: student.cpf,
+        },
+        data: {
+          cpf: "123456789",
+        },
+      })
+    ).rejects.toThrowError("Invalid CPF");
+  });
+
+  it("should try to update user cpf with already used cpf", async () => {
+    const student = await createStudent();
+    const student2 = await createStudent();
+
+    await expect(
+      prisma.user.update({
+        where: {
+          cpf: student.cpf,
+        },
+        data: {
+          cpf: student2.cpf,
+        },
+      })
+    ).rejects.toThrowError(Prisma.PrismaClientKnownRequestError);
   });
 });

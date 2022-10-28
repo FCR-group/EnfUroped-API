@@ -71,7 +71,9 @@ model Post {
     createdAt    DateTime @default(now())
     owner        Student? @relation(fields: [ownerCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
     ownerCpf     String?
-    tags         Tag[] 
+    tags         Tag[]
+
+    @@index([createdAt])
 }
 
 model Tag {
@@ -84,22 +86,28 @@ model Nurse {
     userCpf        String         @id
     isPermitted    Boolean        @default(false)
     isAdmin        Boolean        @default(false)
+    numCoren       String
+    ufCoren        String
     availabilities Availability[]
     patients       Patient[]
     messages       Message[]
+
+    @@unique([numCoren, ufCoren])
 }
 
 model Availability {
-    dateTime    DateTime     @id
-    nurses      Nurse[]
+    dateTime    DateTime
+    nurseCpf    String
+    nurse       Nurse        @relation(fields: [nurseCpf], references: [userCpf], onDelete: Cascade, onUpdate: Cascade)
     appointment Appointment?
+
+    @@id([dateTime, nurseCpf])
 }
 
 model Family {
     user     User      @relation(fields: [userCpf], references: [cpf], onDelete: Cascade, onUpdate: Cascade)
     userCpf  String    @id
     patients Patient[]
-    messages Message[]
 }
 
 model Patient {
@@ -108,11 +116,12 @@ model Patient {
     dateOfBirth  DateTime
     status       PatientStatus
     isActive     Boolean       @default(true)
-    family       Family        @relation(fields: [familyCpf], references: [userCpf], onDelete: Cascade, onUpdate: Cascade)
+    family       Family        @relation(fields: [familyCpf], references: [userCpf], onDelete: Restrict, onUpdate: Cascade)
     familyCpf    String
     nurse        Nurse         @relation(fields: [nurseCpf], references: [userCpf], onDelete: Restrict, onUpdate: Cascade)
     nurseCpf     String
     appointments Appointment[]
+    messages     Message[]
 }
 
 enum PatientStatus {
@@ -122,25 +131,130 @@ enum PatientStatus {
 }
 
 model Message {
-    id         Int      @id @default(autoincrement())
-    title      String
-    content    String
-    attachment String
-    fromNurse  Boolean
-    createdAt  DateTime @default(now())
-    nurse      Nurse?   @relation(fields: [nurseCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
-    nurseCpf   String?
-    family     Family?  @relation(fields: [familyCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
-    familyCpf  String?
-    response   Message? @relation("MessageResponse", fields: [responseId], references: [id], onDelete: SetNull, onUpdate: Cascade)
-    responseId Int?     @unique
-    parent     Message? @relation("MessageResponse")
+    id          Int      @id @default(autoincrement())
+    title       String
+    content     String?
+    attachment  String
+    fromNurse   Boolean
+    createdAt   DateTime @default(now())
+    nurse       Nurse?   @relation(fields: [nurseCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
+    nurseCpf    String?
+    patient     Patient? @relation(fields: [patientId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    patientId   Int?
+    response    Message? @relation("MessageResponse", fields: [responseId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+    responseId  Int?     @unique
+    parent      Message? @relation("MessageResponse")
+    creatorName String
+
+    @@index([createdAt])
 }
 
 model Appointment {
     id           Int          @id @default(autoincrement())
-    patient      Patient      @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    patient      Patient      @relation(fields: [patientId], references: [id], onDelete: Restrict, onUpdate: Cascade)
     patientId    Int
-    dateTime     DateTime     @unique
-    availability Availability @relation(fields: [dateTime], references: [dateTime], onDelete: Restrict, onUpdate: Cascade)
+    dateTime     DateTime
+    nurseCpf     String
+    availability Availability @relation(fields: [dateTime, nurseCpf], references: [dateTime, nurseCpf], onDelete: Restrict, onUpdate: Cascade)
+    // SAE is always required
+    sae          Sae?
+    solChuva     SolChuva?
+    dvss         Dvss?
+    romaIv       RomaIv?
+    // Diary is always required
+    diary        Diary?
+
+    @@unique([dateTime, nurseCpf])
+}
+
+model Sae {
+    expectedResults      String?
+    followedBy           String?
+    mainComplaint        String?
+    historic             String?
+    urinaryEvaluation    String?
+    intestinalEvaluation String?
+    physicalExam         String?
+    diagnosis            String?
+    interventions        String?
+    appointmentId        Int         @id
+    appointment          Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model SolChuva {
+    numChuvas    Int
+    appoitmentId Int         @id
+    appointment  Appointment @relation(fields: [appoitmentId], references: [id], onDelete: Cascade)
+}
+
+model Dvss {
+    question1    Int?
+    question2    Int?
+    question3    Int?
+    question4    Int?
+    question5    Int?
+    question6    Int?
+    question7    Int?
+    question8    Int?
+    question9    Int?
+    question10   Int?
+    appoitmentId Int         @id
+    appointment  Appointment @relation(fields: [appoitmentId], references: [id], onDelete: Cascade)
+}
+
+model RomaIv {
+    question1    Boolean?
+    question2    Boolean?
+    question3    Boolean?
+    question4    Boolean?
+    question5    Boolean?
+    question6    Boolean?
+    appoitmentId Int         @id
+    appointment  Appointment @relation(fields: [appoitmentId], references: [id], onDelete: Cascade)
+}
+
+model Diary {
+    appointmentId Int         @id
+    appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+    drinks        Drink[]
+    urines        Urine[]
+    faeces        Fae[]
+}
+
+model Drink {
+    id       Int      @id @default(autoincrement())
+    type     String
+    quantity Float
+    dateTime DateTime @default(now())
+    diaryId  Int
+    diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
+}
+
+model Urine {
+    id       Int      @id @default(autoincrement())
+    dateTime DateTime @default(now())
+    quantity Float
+    loss     Losses
+    diaryId  Int
+    diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
+}
+
+enum Losses {
+    FEW
+    SOME
+    MUCH
+}
+
+model Fae {
+    id       Int      @id @default(autoincrement())
+    type     Int
+    dateTime DateTime @default(now())
+    diaryId  Int
+    diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
 }

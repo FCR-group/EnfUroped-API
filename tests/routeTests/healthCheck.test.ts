@@ -1,5 +1,5 @@
 import req from "supertest";
-import server from "../src/server";
+import server from "../../src/server";
 
 describe("Health checks", () => {
   it("should return 200", async () => {

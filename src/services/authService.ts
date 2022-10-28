@@ -39,6 +39,6 @@ passport.use(new Strategy({ usernameField: "cpf" }, authUser));
 
 passport.serializeUser((user, next) => next(null, user));
 
-passport.deserializeUser(async (user, next) => next(null, user as any));
+passport.deserializeUser(async (user, next) => next(null, user as Express.User));
 
 export default passport;

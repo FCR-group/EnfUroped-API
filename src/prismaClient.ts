@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import {
+  checkCpfBeforeCreate,
+  checkCpfBeforeUpdate,
   hashPasswordBeforeCreate,
   hashPasswordBeforeUpdate,
   checkUserType,
@@ -17,6 +19,8 @@ if (NODE_ENV === "test") {
 
 const prismaClient = new PrismaClient(options);
 
+prismaClient.$use(checkCpfBeforeCreate);
+prismaClient.$use(checkCpfBeforeUpdate);
 prismaClient.$use(hashPasswordBeforeCreate);
 prismaClient.$use(hashPasswordBeforeUpdate);
 prismaClient.$use(checkUserType);
