@@ -69,6 +69,8 @@ async function createNurse(
         create: {
           isPermitted,
           isAdmin,
+          numCoren: Math.round(Math.random() * 10000000).toFixed(0),
+          ufCoren: Math.round(Math.random() * 100).toFixed(0),
         },
       },
     },

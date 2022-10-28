@@ -48,7 +48,7 @@ const retrieve: RequestHandler = async (req, res) => {
 
 const update: RequestHandler = async (req, res) => {
   const { cpf } = req.params;
-  const { cpf: cpfToChange, name, email, phone, password } = req.body;
+  const { cpf: cpfToChange, name, email, phone, password, numCoren, ufCoren } = req.body;
 
   const nurse = await prisma.user.update({
     where: {
@@ -60,6 +60,15 @@ const update: RequestHandler = async (req, res) => {
       email,
       phone,
       password,
+      nurse:
+        numCoren !== undefined || ufCoren !== undefined
+          ? {
+              update: {
+                numCoren,
+                ufCoren,
+              },
+            }
+          : undefined,
     },
     select: {
       cpf: true,

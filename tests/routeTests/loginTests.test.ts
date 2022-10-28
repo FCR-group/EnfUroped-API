@@ -18,6 +18,8 @@ describe("Login tests", () => {
     email: "nurse@email.com",
     password: "password",
     name: "Example Name",
+    numCoren: "1234567",
+    ufCoren: "SP",
   };
 
   const familyToRegister = {
