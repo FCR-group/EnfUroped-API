@@ -72,6 +72,8 @@ model Post {
     owner        Student? @relation(fields: [ownerCpf], references: [userCpf], onDelete: SetNull, onUpdate: Cascade)
     ownerCpf     String?
     tags         Tag[]
+
+    @@index([createdAt])
 }
 
 model Tag {
@@ -143,6 +145,8 @@ model Message {
     responseId  Int?     @unique
     parent      Message? @relation("MessageResponse")
     creatorName String
+
+    @@index([createdAt])
 }
 
 model Appointment {
@@ -224,6 +228,8 @@ model Drink {
     dateTime DateTime @default(now())
     diaryId  Int
     diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
 }
 
 model Urine {
@@ -233,6 +239,8 @@ model Urine {
     loss     Losses
     diaryId  Int
     diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
 }
 
 enum Losses {
@@ -247,4 +255,6 @@ model Fae {
     dateTime DateTime @default(now())
     diaryId  Int
     diary    Diary    @relation(fields: [diaryId], references: [appointmentId], onDelete: Cascade)
+
+    @@index([dateTime])
 }
