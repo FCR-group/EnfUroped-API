@@ -2,10 +2,8 @@ import { RequestHandler } from "express";
 import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
-// without test
-
 const send: RequestHandler = async (req, res) => {
-  const { title, content, attachment, fromNurse, createdAt, nurseCpf, familyCpf, parentId } =
+  const { title, content, attachment, fromNurse, createdAt, nurseCpf, patientId, creatorName } =
     req.body;
   await prisma.message.create({
     data: {
@@ -15,8 +13,8 @@ const send: RequestHandler = async (req, res) => {
       fromNurse,
       createdAt,
       nurse: { connect: { userCpf: nurseCpf } },
-      family: { connect: { userCpf: familyCpf } },
-      parent: parentId !== undefined ? { connect: { id: parentId } } : undefined,
+      patient: { connect: { id: patientId } },
+      creatorName,
     },
   });
   return res.sendStatus(201);
@@ -31,12 +29,12 @@ const list: RequestHandler = async (req, res) => {
 };
 
 const chatMessage: RequestHandler = async (req, res) => {
-  const { familyCpfQ } = req.query;
-  const familyCpf = familyCpfQ as string;
+  const { patientIdQ } = req.query;
+  const patientId = parseInt(patientIdQ as string, 10);
 
   const message = await prisma.message.findMany({
     where: {
-      familyCpf,
+      patientId,
     },
     orderBy: {
       createdAt: "asc",

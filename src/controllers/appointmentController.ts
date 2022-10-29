@@ -3,9 +3,14 @@ import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
 const make: RequestHandler = async (req, res) => {
-  const { patientId, dateTime } = req.body;
+  const { patientId, dateTime, nurseCpf } = req.body;
   await prisma.appointment.create({
-    data: { patient: { connect: { id: patientId } }, availability: { connect: { dateTime } } },
+    data: {
+      patient: { connect: { id: patientId } },
+      dateTime,
+      nurseCpf,
+      availability: { connect: { dateTime_nurseCpf: { dateTime, nurseCpf } } },
+    },
   });
   return res.sendStatus(201);
 };
@@ -29,12 +34,14 @@ const update: RequestHandler = async (req, res) => {
   const { idH } = req.params;
   const id = parseInt(idH, 10);
 
-  const { patientId, dateTime } = req.body;
+  const { patientId, dateTime, nurseCpf } = req.body;
   await prisma.appointment.update({
     where: { id },
     data: {
       patient: { connect: { id: patientId } },
-      availability: { connect: { dateTime } },
+      dateTime,
+      nurseCpf,
+      availability: { connect: { dateTime_nurseCpf: { dateTime, nurseCpf } } },
     },
   });
   return res.sendStatus(204);
