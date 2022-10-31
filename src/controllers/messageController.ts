@@ -2,6 +2,8 @@ import { RequestHandler } from "express";
 import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
+// TODO
+
 const send: RequestHandler = async (req, res) => {
   const { title, content, attachment, fromNurse, createdAt, nurseCpf, patientId, creatorName } =
     req.body;
