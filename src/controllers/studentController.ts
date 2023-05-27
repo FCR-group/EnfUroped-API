@@ -4,9 +4,9 @@ import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
 const list: RequestHandler = async (req, res) => {
-  const families = await prisma.user.findMany({
+  const students = await prisma.user.findMany({
     where: {
-      type: UserType.FAMILY,
+      type: UserType.STUDENT,
     },
     select: {
       cpf: true,
@@ -14,20 +14,20 @@ const list: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      student: true,
     },
   });
 
-  return res.status(200).json(families);
+  return res.status(200).json(students);
 };
 
 const retrieve: RequestHandler = async (req, res) => {
   const { cpf } = req.params;
 
-  const family = await prisma.user.findFirst({
+  const student = await prisma.user.findFirst({
     where: {
       cpf,
-      type: UserType.FAMILY,
+      type: UserType.STUDENT,
     },
     select: {
       cpf: true,
@@ -35,22 +35,22 @@ const retrieve: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      student: true,
     },
   });
 
-  if (!family) {
+  if (!student) {
     throw new HttpError.NotFound();
   }
 
-  return res.status(200).json(family);
+  return res.status(200).json(student);
 };
 
 const update: RequestHandler = async (req, res) => {
   const { cpf } = req.params;
   const { cpf: cpfToChange, name, email, phone, password } = req.body;
 
-  const family = await prisma.user.update({
+  const student = await prisma.user.update({
     where: {
       cpf,
     },
@@ -67,11 +67,11 @@ const update: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      student: true,
     },
   });
 
-  return res.status(200).json(family);
+  return res.status(200).json(student);
 };
 
 const destroy: RequestHandler = async (req, res) => {
@@ -86,9 +86,25 @@ const destroy: RequestHandler = async (req, res) => {
   return res.sendStatus(204);
 };
 
+const permit: RequestHandler = async (req, res) => {
+  const { cpf } = req.params;
+
+  await prisma.student.update({
+    where: {
+      userCpf: cpf,
+    },
+    data: {
+      isPermitted: true,
+    },
+  });
+
+  return res.sendStatus(204);
+};
+
 export default {
   list,
   retrieve,
   update,
   destroy,
+  permit,
 };

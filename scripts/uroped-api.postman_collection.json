@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "6a0b9bcb-5488-4e09-a834-57c360ff6e72",
+		"name": "uroped-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24152938"
+	},
+	"item": [
+		{
+			"name": "Nurse",
+			"item": [
+				{
+					"name": "permit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_nurse}}/permit/:cpf",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								"permit",
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "grant admin",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_nurse}}/turnAdmin/:cpf",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								"turnAdmin",
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_nurse}}/",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get specific",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_nurse}}/:cpf",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": "08268138106"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_nurse}}/:cpf",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_nurse}}/:cpf",
+							"host": [
+								"{{base_url_nurse}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "permit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_student}}/permit/:cpf",
+							"host": [
+								"{{base_url_student}}"
+							],
+							"path": [
+								"permit",
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_student}}/",
+							"host": [
+								"{{base_url_student}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get specific",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_student}}/:cpf",
+							"host": [
+								"{{base_url_student}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_student}}/:cpf",
+							"host": [
+								"{{base_url_student}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_student}}/:cpf",
+							"host": [
+								"{{base_url_student}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Family",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_family}}/",
+							"host": [
+								"{{base_url_family}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get specific",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_family}}/:cpf",
+							"host": [
+								"{{base_url_family}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_family}}/:cpf",
+							"host": [
+								"{{base_url_family}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_family}}/:cpf",
+							"host": [
+								"{{base_url_family}}"
+							],
+							"path": [
+								":cpf"
+							],
+							"variable": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"item": [
+						{
+							"name": "example of a register request",
+							"request": {
+								"method": "EXAMPLE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"name\": \"\",\r\n    \"phone\": \"\",\r\n    \"password\": \"\",\r\n    \"numCoren\": \"\",\r\n    \"ufCoren\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url_auth}}/register/something",
+									"host": [
+										"{{base_url_auth}}"
+									],
+									"path": [
+										"register",
+										"something"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register nurse",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"08268138106\",\r\n    \"email\": \"email@email.com\",\r\n    \"name\": \"Nurse\",\r\n    \"phone\": \"61123456789\",\r\n    \"password\": \"123456\",\r\n    \"numCoren\": \"123\",\r\n    \"ufCoren\": \"DF\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url_auth}}/register/nurse",
+									"host": [
+										"{{base_url_auth}}"
+									],
+									"path": [
+										"register",
+										"nurse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register student",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"name\": \"\",\r\n    \"phone\": \"\",\r\n    \"password\": \"\",\r\n    \"numCoren\": \"\",\r\n    \"ufCoren\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url_auth}}/register/student",
+									"host": [
+										"{{base_url_auth}}"
+									],
+									"path": [
+										"register",
+										"student"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register family",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cpf\": \"\",\r\n    \"email\": \"\",\r\n    \"name\": \"\",\r\n    \"phone\": \"\",\r\n    \"password\": \"\",\r\n    \"numCoren\": \"\",\r\n    \"ufCoren\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url_auth}}/register/family",
+									"host": [
+										"{{base_url_auth}}"
+									],
+									"path": [
+										"register",
+										"family"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cpf\":\"08268138106\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url_auth}}/login",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url_auth}}/logout",
+							"host": [
+								"{{base_url_auth}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

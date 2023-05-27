@@ -4,9 +4,9 @@ import HttpError from "http-errors";
 import prisma from "../prismaClient";
 
 const list: RequestHandler = async (req, res) => {
-  const families = await prisma.user.findMany({
+  const nurses = await prisma.user.findMany({
     where: {
-      type: UserType.FAMILY,
+      type: UserType.NURSE,
     },
     select: {
       cpf: true,
@@ -14,20 +14,20 @@ const list: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      nurse: true,
     },
   });
 
-  return res.status(200).json(families);
+  return res.status(200).json(nurses);
 };
 
 const retrieve: RequestHandler = async (req, res) => {
   const { cpf } = req.params;
 
-  const family = await prisma.user.findFirst({
+  const nurse = await prisma.user.findFirst({
     where: {
       cpf,
-      type: UserType.FAMILY,
+      type: UserType.NURSE,
     },
     select: {
       cpf: true,
@@ -35,22 +35,22 @@ const retrieve: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      nurse: true,
     },
   });
 
-  if (!family) {
+  if (!nurse) {
     throw new HttpError.NotFound();
   }
 
-  return res.status(200).json(family);
+  return res.status(200).json(nurse);
 };
 
 const update: RequestHandler = async (req, res) => {
   const { cpf } = req.params;
-  const { cpf: cpfToChange, name, email, phone, password } = req.body;
+  const { cpf: cpfToChange, name, email, phone, password, numCoren, ufCoren } = req.body;
 
-  const family = await prisma.user.update({
+  const nurse = await prisma.user.update({
     where: {
       cpf,
     },
@@ -60,6 +60,15 @@ const update: RequestHandler = async (req, res) => {
       email,
       phone,
       password,
+      nurse:
+        numCoren !== undefined || ufCoren !== undefined
+          ? {
+              update: {
+                numCoren,
+                ufCoren,
+              },
+            }
+          : undefined,
     },
     select: {
       cpf: true,
@@ -67,11 +76,11 @@ const update: RequestHandler = async (req, res) => {
       email: true,
       phone: true,
       type: true,
-      family: true,
+      nurse: true,
     },
   });
 
-  return res.status(200).json(family);
+  return res.status(200).json(nurse);
 };
 
 const destroy: RequestHandler = async (req, res) => {
@@ -86,9 +95,41 @@ const destroy: RequestHandler = async (req, res) => {
   return res.sendStatus(204);
 };
 
+const permit: RequestHandler = async (req, res) => {
+  const { cpf } = req.params;
+
+  await prisma.nurse.update({
+    where: {
+      userCpf: cpf,
+    },
+    data: {
+      isPermitted: true,
+    },
+  });
+
+  return res.sendStatus(204);
+};
+
+const turnAdmin: RequestHandler = async (req, res) => {
+  const { cpf } = req.params;
+
+  await prisma.nurse.update({
+    where: {
+      userCpf: cpf,
+    },
+    data: {
+      isAdmin: true,
+    },
+  });
+
+  return res.sendStatus(204);
+};
+
 export default {
   list,
   retrieve,
   update,
   destroy,
+  permit,
+  turnAdmin,
 };
